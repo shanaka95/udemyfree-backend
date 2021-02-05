@@ -79,8 +79,9 @@ class AdminCourseView(views.APIView):
 class AdminCourseDeleteView(views.APIView):
     def post(self, request):
         if (request.data['key'] == "%$@#GHJ854SDF53-SSdddddasda2354234VBXCSDFaseqovmgtcanrt"):
-            Course.objects.filter(course_id=int(request.data['id'])).delete()
-            count= len(Course.objects.all())
-            return Response({"status": True, "count": count})
+            course = Course.objects.get(course_id=int(request.data['id']))
+            course.isActive = False
+            course.save()
+            return Response({"status": True})
         else:
             return Response({"status": False})
