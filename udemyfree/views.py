@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import views, generics
@@ -76,6 +77,7 @@ class AdminCourseView(views.APIView):
             return Response(serializer.data)
         else:
             return Response({})
+
 class AdminCourseDeleteView(views.APIView):
     def post(self, request):
         if (request.data['key'] == "%$@#GHJ854SDF53-SSdddddasda2354234VBXCSDFaseqovmgtcanrt"):
@@ -86,3 +88,53 @@ class AdminCourseDeleteView(views.APIView):
             return Response({"status": True, "count":count })
         else:
             return Response({"status": False})
+
+class CrawlCategoryView(views.APIView):
+    def get(self, request, id):
+        category = Category.objects.filter(cat_id=id)[0]
+
+        html = """<html>
+                <head>
+                <title>Free %s | Daily Updated!</title>
+                <meta property="og:title" name="title" content="Free %s | Daily Updated!">
+                <meta property="og:description" name="description" content="Find out latest Free %s .The courses list contains 100+ courses and, is updated daily.">
+                <meta name="keywords" content="free online courses, udemy coupons, online courses, free courses, udemy, udemy free courses, udemy, free udemy courses,udemy courses,udemy python,udemy reviews,free courses online,online courses">
+                <meta property="og:image" content="https://udemyfree.courses/images/udemyfreecourses.png" />
+                <meta property="og:type" content="article" />
+                <meta name="robots" content="index, follow">
+                <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+                <meta name="language" content="English">
+                <meta name="revisit-after" content="1 days">
+                <meta name="author" content="Finlay West">
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                </head>
+            </html>
+            """ %(category.name,category.name,category.name)
+        return HttpResponse(html)
+
+class CrawlCourseView(views.APIView):
+    def get(self, request, id):
+        course = Course.objects.filter(key=id)[0]
+        category = Category.objects.filter(cat_id=course.category.cat_id)[0]
+
+        html = """<html>
+                <head>
+                    <title>Enroll in Udemy Course %s for Free</title>
+                    <meta charset="utf-8">
+                    <meta property="og:title" name="title" content="Enroll in Udemy Course %s for Free">
+                    <meta property="og:description" name="description" content="Limited Time Offer | Find out more Free %s. The courses list contains 100+ courses and, is updated daily.">
+                    <meta name="keywords" content="free online courses, udemy coupons, online courses, free courses, udemy, udemy free courses, udemy, free udemy courses,udemy courses,udemy python,udemy reviews,free courses online,online courses">
+                    <meta property="og:type" content="article" />
+                    <meta property="og:image" content="%s" />
+                    <meta name="robots" content="index, follow">
+                    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+                    <meta name="language" content="English">
+                    <meta name="revisit-after" content="1 days">
+                    <meta name="author" content="Finlay West">
+                    <meta charset="utf-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
+                </head>
+            </html>
+            """ %(course.name,course.name,category.name,course.image )
+        return HttpResponse(html)

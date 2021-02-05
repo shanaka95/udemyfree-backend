@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 
 from udemyfree.views import CategoryView, CategoryPostsView, CategoryOnlyView, CourseView, AdminCourseView, \
-    AdminCourseDeleteView
+    AdminCourseDeleteView, CrawlCategoryView, CrawlCourseView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,5 +26,8 @@ urlpatterns = [
     path('categories/all', CategoryOnlyView.as_view()),
     path('course/<id>', CourseView.as_view()),
     path('admin/courses/check', AdminCourseDeleteView.as_view()),
-    path('admin/courses', AdminCourseView.as_view())
+    path('admin/courses', AdminCourseView.as_view()),
+    path('crawl/category/<id>', CrawlCategoryView.as_view()),
+    path('crawl/course/<id>', CrawlCourseView.as_view())
+
 ]
