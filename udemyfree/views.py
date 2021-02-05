@@ -26,7 +26,7 @@ class CategoryOnlyView(views.APIView):
         return Response(serializer.data)
 
 class CategoryPostsView(GenericAPIView):
-    queryset = Course.objects.all().order_by('-createdAt')
+    queryset = Course.objects.filter(isActive=True).order_by('-createdAt')
     serializer_class = CourseSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'description','author', 'category__name']
@@ -67,3 +67,20 @@ class CourseView(views.APIView):
         serializer.data[0]['catelog'] = serializer.data[0]['catelog'].split('^')
 
         return Response({'course': serializer.data, 'category': cat_serializer.data})
+
+class AdminCourseView(views.APIView):
+    def post(self, request):
+        if (request.data['key'] == "%$@#GHJ854SDF53-SSdddddasda2354234VBXCSDFaseqovmgtcanrt"):
+            courses = Course.objects.filter(isActive=True).order_by('createdAt')
+            serializer = CourseSerializer(courses, many=True)
+            return Response(serializer.data)
+        else:
+            return Response({})
+class AdminCourseDeleteView(views.APIView):
+    def post(self, request):
+        if (request.data['key'] == "%$@#GHJ854SDF53-SSdddddasda2354234VBXCSDFaseqovmgtcanrt"):
+            Course.objects.filter(course_id=int(request.data['id'])).delete()
+            count= len(Course.objects.all())
+            return Response({"status": True, "count": count})
+        else:
+            return Response({"status": False})

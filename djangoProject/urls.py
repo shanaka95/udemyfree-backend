@@ -16,7 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from udemyfree.views import CategoryView, CategoryPostsView, CategoryOnlyView, CourseView
+from udemyfree.views import CategoryView, CategoryPostsView, CategoryOnlyView, CourseView, AdminCourseView, \
+    AdminCourseDeleteView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,4 +25,6 @@ urlpatterns = [
     path('category/<id>', CategoryPostsView.as_view()),
     path('categories/all', CategoryOnlyView.as_view()),
     path('course/<id>', CourseView.as_view()),
+    path('admin/courses/check', AdminCourseDeleteView.as_view()),
+    path('admin/courses', AdminCourseView.as_view())
 ]
