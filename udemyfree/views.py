@@ -82,6 +82,7 @@ class AdminCourseDeleteView(views.APIView):
             course = Course.objects.get(course_id=int(request.data['id']))
             course.isActive = False
             course.save()
-            return Response({"status": True})
+            count = Course.objects.filter(isActive=True).count()
+            return Response({"status": True, "count":count })
         else:
             return Response({"status": False})
