@@ -9,5 +9,12 @@
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://127.0.0.1:3306/udemyfree</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="server" uuid="ee19a1f7-ca25-46d1-8f0e-59cff403a67e">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://udemyfree.courses:3306/udemyfree</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

@@ -33,14 +33,10 @@ class CategoryPostsView(GenericAPIView):
     search_fields = ['name', 'description','author', 'category__name']
 
     def get(self, request, id):
-        try:
-            id = int(id)
-        except:
-            return Response({'status': 'Invalid Request', 'error': 'Category Id is not Valid'})
 
-        if int(id) > 0:
-            courses = self.filter_queryset(self.get_queryset()).filter(category=id)
-            category = Category.objects.filter(cat_id=id)
+        if id != 'all-courses':
+            courses = self.filter_queryset(self.get_queryset()).filter(category__identifier=id)
+            category = Category.objects.filter(identifier=id)
             paginator = Paginator(courses, 20)
             page_number = request.GET.get('page')
             page_obj = paginator.get_page(page_number)
