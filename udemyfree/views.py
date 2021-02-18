@@ -87,7 +87,7 @@ class AdminCourseDeleteView(views.APIView):
 
 class CrawlCategoryView(views.APIView):
     def get(self, request, id):
-        category = Category.objects.filter(cat_id=id)[0]
+        category = Category.objects.filter(identifier=id)[0]
 
         html = """<html>
                 <head>
