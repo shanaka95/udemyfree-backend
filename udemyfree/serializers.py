@@ -14,11 +14,11 @@ class CategorySerializer(serializers.ModelSerializer):
     courses = CourseSerializer(many=True)
     class Meta:
         model = Category
-        fields = ['cat_id','name','description','courses','isActive']
+        fields = ['cat_id','name','description','courses','identifier', 'isActive']
 
 class CategorySerializerWithoutCourses(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['cat_id','name','key','description','isActive']
+        fields = ['cat_id','name','key','description','identifier', 'isActive']
 
 

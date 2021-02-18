@@ -4,6 +4,7 @@ class Category(models.Model):
     cat_id = models.AutoField(primary_key=True)
     key = models.CharField(max_length=100, null=True)
     name = models.CharField( max_length=255,null=True)
+    identifier = models.CharField(max_length=100, null=True)
     description = models.TextField(blank=True, null=True)
     createdAt = models.DateTimeField("Created At", auto_now_add=True)
     isActive = models.BooleanField(default=True)
