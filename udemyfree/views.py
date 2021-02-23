@@ -87,26 +87,46 @@ class AdminCourseDeleteView(views.APIView):
 
 class CrawlCategoryView(views.APIView):
     def get(self, request, id):
-        category = Category.objects.filter(identifier=id)[0]
+        if id == "all-courses":
+            html = """<html>
+                    <head>
+                    <title>Free Udemy Courses | Daily Updated!</title>
+                    <meta property="og:title" name="title" content="Free Udemy Courses | Daily Updated!">
+                    <meta property="og:description" name="description" content="Find out latest Free Udemy Courses .The courses list contains 100+ courses and, is updated daily.">
+                    <meta name="keywords" content="free online courses, udemy coupons, online courses, free courses, udemy, udemy free courses, udemy, free udemy courses,udemy courses,udemy python,udemy reviews,free courses online,online courses">
+                    <meta property="og:image" content="https://udemyfree.courses/images/udemyfreecourses.png" />
+                    <meta property="og:type" content="article" />
+                    <meta name="robots" content="index, follow">
+                    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+                    <meta name="language" content="English">
+                    <meta name="revisit-after" content="1 days">
+                    <meta name="author" content="Finlay West">
+                    <meta charset="utf-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
+                    </head>
+                </html>
+                """
+        else:
+            category = Category.objects.filter(identifier=id)[0]
 
-        html = """<html>
-                <head>
-                <title>Free %s | Daily Updated!</title>
-                <meta property="og:title" name="title" content="Free %s | Daily Updated!">
-                <meta property="og:description" name="description" content="Find out latest Free %s .The courses list contains 100+ courses and, is updated daily.">
-                <meta name="keywords" content="free online courses, udemy coupons, online courses, free courses, udemy, udemy free courses, udemy, free udemy courses,udemy courses,udemy python,udemy reviews,free courses online,online courses">
-                <meta property="og:image" content="https://udemyfree.courses/images/udemyfreecourses.png" />
-                <meta property="og:type" content="article" />
-                <meta name="robots" content="index, follow">
-                <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-                <meta name="language" content="English">
-                <meta name="revisit-after" content="1 days">
-                <meta name="author" content="Finlay West">
-                <meta charset="utf-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1">
-                </head>
-            </html>
-            """ %(category.name,category.name,category.name)
+            html = """<html>
+                    <head>
+                    <title>Free %s | Daily Updated!</title>
+                    <meta property="og:title" name="title" content="Free %s | Daily Updated!">
+                    <meta property="og:description" name="description" content="Find out latest Free %s .The courses list contains 100+ courses and, is updated daily.">
+                    <meta name="keywords" content="free online courses, udemy coupons, online courses, free courses, udemy, udemy free courses, udemy, free udemy courses,udemy courses,udemy python,udemy reviews,free courses online,online courses">
+                    <meta property="og:image" content="https://udemyfree.courses/images/udemyfreecourses.png" />
+                    <meta property="og:type" content="article" />
+                    <meta name="robots" content="index, follow">
+                    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+                    <meta name="language" content="English">
+                    <meta name="revisit-after" content="1 days">
+                    <meta name="author" content="Finlay West">
+                    <meta charset="utf-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
+                    </head>
+                </html>
+                """ %(category.name,category.name,category.name)
         return HttpResponse(html)
 
 class CrawlCourseView(views.APIView):

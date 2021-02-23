@@ -11,7 +11,13 @@ class CourseSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    courses = CourseSerializer(many=True)
+    courses = serializers.SerializerMethodField('get_courses')
+
+    def get_courses(self,category):
+        print(category)
+        qs = Course.objects.filter(isActive = True, category__name=category)
+        serializer = CourseSerializer(instance=qs, many=True)
+        return serializer.data
     class Meta:
         model = Category
         fields = ['cat_id','name','description','courses','identifier', 'isActive']
