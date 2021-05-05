@@ -177,13 +177,18 @@ class SitemapView(views.APIView):
 <url>
   <loc>https://udemyfree.courses/courses/category/all-courses</loc>
   <lastmod>2021-04-08T04:37:31+00:00</lastmod>
-  <priority>0.80</priority>
+  <priority>1.00</priority>
 </url>
 """
         xml2 = """<url>
+<loc>https://udemyfree.courses/add</loc>
+  <lastmod>2021-04-08T04:37:31+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
   <loc>https://udemyfree.courses/privacy-policy</loc>
   <lastmod>2021-02-20T18:28:29+00:00</lastmod>
-  <priority>0.80</priority>
+  <priority>1.00</priority>
 </url>
 </urlset>
         """
