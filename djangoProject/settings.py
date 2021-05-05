@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'dccb@mj*8jiog5b#0aoc1^412281hy!$&p^!5rg@t%o*v)d9p7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['udemyfree.courses', '127.0.0.1']
 
