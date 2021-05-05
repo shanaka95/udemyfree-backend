@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'udemyfree.apps.UdemyfreeConfig',
     'rest_framework',
+    'rest_framework_xml',
 ]
 
 MIDDLEWARE = [
@@ -130,4 +131,5 @@ STATIC_ROOT = 'static'
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20
+
 }

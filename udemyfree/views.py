@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.http import HttpResponse
 from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
@@ -6,9 +8,13 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from django.core.paginator import Paginator
+from rest_framework_xml.renderers import XMLRenderer
+
 from udemyfree.models import Category, Course
 from udemyfree.serializers import CategorySerializer, CourseSerializer, CategorySerializerWithoutCourses
 from rest_framework import filters
+
+import xml.etree.ElementTree as ET
 
 class CategoryView(views.APIView):
 
@@ -154,3 +160,51 @@ class CrawlCourseView(views.APIView):
             </html>
             """ %(course.name,course.name,category.name,course.image )
         return HttpResponse(html)
+
+
+class SitemapView(views.APIView):
+    content_type = 'application/xml'
+
+    def get(self, request):
+        xml = """<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+<url>
+  <loc>https://udemyfree.courses/</loc>
+  <lastmod>2021-04-08T04:37:31+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://udemyfree.courses/courses/category/all-courses</loc>
+  <lastmod>2021-04-08T04:37:31+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+"""
+        xml2 = """<url>
+  <loc>https://udemyfree.courses/privacy-policy</loc>
+  <lastmod>2021-02-20T18:28:29+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+</urlset>
+        """
+        AllCategories = Category.objects.filter(isActive=True)
+        serializer = CategorySerializer(AllCategories, many=True)
+        for i in serializer.data:
+            date_string = datetime.today().strftime('%Y-%m-%d')
+            xml += """<url>
+  <loc>https://udemyfree.courses/courses/category/%s</loc>
+  <lastmod>%sT06:00:00+00:00</lastmod>
+  <priority>1.00</priority>
+</url>""" % (i['identifier'], date_string)
+        courses =  Course.objects.filter(isActive=1)
+        serializer = CourseSerializer(courses, many=True)
+        for i in serializer.data:
+            date_string = datetime.today().strftime('%Y-%m-%d')
+            xml += """<url>
+  <loc>https://udemyfree.courses/enroll/course/%s</loc>
+  <lastmod>%sT06:00:00+00:00</lastmod>
+  <priority>0.80</priority>
+</url>""" % (i['key'], date_string)
+
+        xml += xml2
+        return HttpResponse(xml, content_type='application/xml')
