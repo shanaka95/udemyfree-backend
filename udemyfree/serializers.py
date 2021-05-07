@@ -28,3 +28,12 @@ class CategorySerializerWithoutCourses(serializers.ModelSerializer):
         fields = ['cat_id','name','key','description','identifier', 'isActive']
 
 
+class SiteMapCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['identifier']
+
+class SiteMapCoursesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = ['key']

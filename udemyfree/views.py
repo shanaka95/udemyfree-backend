@@ -10,7 +10,8 @@ from rest_framework.response import Response
 from django.core.paginator import Paginator
 
 from udemyfree.models import Category, Course
-from udemyfree.serializers import CategorySerializer, CourseSerializer, CategorySerializerWithoutCourses
+from udemyfree.serializers import CategorySerializer, CourseSerializer, CategorySerializerWithoutCourses, \
+    SiteMapCoursesSerializer, SiteMapCategorySerializer
 from rest_framework import filters
 
 class CategoryView(views.APIView):
@@ -190,20 +191,19 @@ class SitemapView(views.APIView):
 </urlset>
         """
         AllCategories = Category.objects.filter(isActive=True)
-        serializer = CategorySerializer(AllCategories, many=True)
-        courses = []
+        serializer = SiteMapCategorySerializer(AllCategories, many=True)
+
         for i in serializer.data:
-            courses.append(i['courses'])
             date_string = datetime.today().strftime('%Y-%m-%d')
             xml += """<url>
   <loc>https://udemyfree.courses/courses/category/%s</loc>
   <lastmod>%sT06:00:00+00:00</lastmod>
   <priority>1.00</priority>
 </url>""" % (i['identifier'], date_string)
-        # courses =  Course.objects.filter(isActive=1)
-        # serializer = CourseSerializer(courses, many=True)
-        # for i in serializer.data:
-        for i in courses:
+
+        courses =  Course.objects.filter(isActive=1)
+        serializer = SiteMapCoursesSerializer(courses, many=True)
+        for i in serializer.data:
             date_string = datetime.today().strftime('%Y-%m-%d')
             xml += """<url>
   <loc>https://udemyfree.courses/enroll/course/%s</loc>
