@@ -9,7 +9,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from django.core.paginator import Paginator
 
-from udemyfree.models import Category, Course
+from udemyfree.models import Category, Course, ExpiredCourse
 from udemyfree.serializers import CategorySerializer, CourseSerializer, CategorySerializerWithoutCourses, \
     SiteMapCoursesSerializer, SiteMapCategorySerializer
 from rest_framework import filters
@@ -83,7 +83,23 @@ class AdminCourseDeleteView(views.APIView):
         if (request.data['key'] == "%$@#GHJ854SDF53-SSdddddasda2354234VBXCSDFaseqovmgtcanrt"):
             course = Course.objects.get(course_id=int(request.data['id']))
             course.isActive = False
-            course.save()
+            newCourse = ExpiredCourse()
+            newCourse.course_id = course.course_id
+            newCourse.name = course.name
+            newCourse.image = course.image
+            newCourse.category = course.category
+            newCourse.author = course.author
+            newCourse.catelog = course.catelog
+            newCourse.description = course.description
+            newCourse.key = course.key
+            newCourse.isActive = False
+            newCourse.url = course.url
+            newCourse.rating = course.rating
+            newCourse.reviews = course.reviews
+            newCourse.language = course.language
+            newCourse.students = course.students
+            newCourse.save()
+            course.delete()
             count = Course.objects.filter(isActive=True).count()
             return Response({"status": True, "count":count })
         else:
