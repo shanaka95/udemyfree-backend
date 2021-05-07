@@ -37,7 +37,7 @@ class Course(models.Model):
 class ExpiredCourse(models.Model):
     course_id = models.IntegerField(primary_key=True)
     name = models.CharField( max_length=255, null=True)
-    image = models.CharField(max_length=255, null=True)
+    image = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     url = models.CharField(max_length=255, unique=True)
     key = models.CharField(max_length=255, unique=True)
