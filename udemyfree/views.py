@@ -8,13 +8,10 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from django.core.paginator import Paginator
-from rest_framework_xml.renderers import XMLRenderer
 
 from udemyfree.models import Category, Course
 from udemyfree.serializers import CategorySerializer, CourseSerializer, CategorySerializerWithoutCourses
 from rest_framework import filters
-
-import xml.etree.ElementTree as ET
 
 class CategoryView(views.APIView):
 
@@ -194,16 +191,19 @@ class SitemapView(views.APIView):
         """
         AllCategories = Category.objects.filter(isActive=True)
         serializer = CategorySerializer(AllCategories, many=True)
+        courses = []
         for i in serializer.data:
+            courses.append(i['courses'])
             date_string = datetime.today().strftime('%Y-%m-%d')
             xml += """<url>
   <loc>https://udemyfree.courses/courses/category/%s</loc>
   <lastmod>%sT06:00:00+00:00</lastmod>
   <priority>1.00</priority>
 </url>""" % (i['identifier'], date_string)
-        courses =  Course.objects.filter(isActive=1)
-        serializer = CourseSerializer(courses, many=True)
-        for i in serializer.data:
+        # courses =  Course.objects.filter(isActive=1)
+        # serializer = CourseSerializer(courses, many=True)
+        # for i in serializer.data:
+        for i in courses:
             date_string = datetime.today().strftime('%Y-%m-%d')
             xml += """<url>
   <loc>https://udemyfree.courses/enroll/course/%s</loc>
