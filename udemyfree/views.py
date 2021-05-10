@@ -92,14 +92,14 @@ class AdminCourseDeleteView(views.APIView):
             newCourse.catelog = course.catelog
             newCourse.description = course.description
             newCourse.key = course.key
-            newCourse.isActive = False
+            newCourse.isActive = 0
             newCourse.url = course.url
             newCourse.rating = course.rating
-            newCourse.reviews = course.reviews
+            newCourse.reviews = 0
             newCourse.language = course.language
             newCourse.students = course.students
-            newCourse.save()
             course.delete()
+            newCourse.save()
             count = Course.objects.filter(isActive=True).count()
             return Response({"status": True, "count":count })
         else:
